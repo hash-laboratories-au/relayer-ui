@@ -1,7 +1,7 @@
 import web3 from 'web3';
 import { abi } from './utils';
 
-const mainnetUrl = "https://194.233.77.19:8545";
+const mainnetUrl = "http://194.233.77.19:8545";
 const smartContractAddress = "0xAf39A48f27e0C84DD104c1a8338EA74D63a86B12";
 
 var web3Client = new web3(mainnetUrl);
