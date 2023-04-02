@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.node__root>circle {
+    fill: green;
+}
+
+.node__branch>circle {
+    fill: red;
+}
+
+.node__leaf>circle {
+    fill: red;
+}
+
+.trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(59, 130, 246, 0.5);
+}
