@@ -1,8 +1,8 @@
 import web3 from 'web3';
 import { abi } from './utils';
 
-const mainnetUrl = "https://devnetstats.apothem.network/api";
-const smartContractAddress = "0xAf39A48f27e0C84DD104c1a8338EA74D63a86B12";
+const mainnetUrl = "https://devnetstats.apothem.network/mainnet";
+const smartContractAddress = "0x203F7f019401a8B26aA071901dc9dDcfe3611FD4";
 
 var web3Client = new web3(mainnetUrl);
 var smartContractInstance = new web3Client.eth.Contract(abi as any, smartContractAddress);
