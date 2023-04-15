@@ -15,6 +15,9 @@ export const confirmStatus = async(hashToConfirm: string) => {
   const {subnetBlockHeight, committed } = await getSubnetHeaderFromMainnet(hashToConfirm)
   if (!committed) return false;
   const { subnetBlockHash, committedInSubnet } = await getComittedBlockByHeightFromSubnet(subnetBlockHeight)
-  if (!committedInSubnet) return false;
-  return subnetBlockHash === hashToConfirm
+  return {
+    isCommittedInSmartContract: committed,
+    isCommittedInSubnet: committedInSubnet,
+    isCommitted: (subnetBlockHash === hashToConfirm) && committed && committedInSubnet
+  }
 };

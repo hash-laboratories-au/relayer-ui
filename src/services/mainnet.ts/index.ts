@@ -15,6 +15,7 @@ export const fetchLatestFromMainnet = async() => {
 
 export const getSubnetHeaderFromMainnet = async (hash: string) => {
   const result = await smartContractInstance.methods.getHeader(hash).call();
+  console.log(result)
   return {
     subnetBlockHeight: result[1],
     committed: result[4]

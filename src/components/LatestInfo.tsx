@@ -20,18 +20,18 @@ const App: React.FC = () => {
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Card title="Smart Contract Hash" bordered={false}>
+          <Card title="Smart Contract Latest Committed Hash" bordered={false}>
             {latestInfo.scHash}
           </Card>
-          <Card title="Smart ContractHeight" bordered={false}>
+          <Card title="Smart Contract Latest Committed Height" bordered={false}>
             {latestInfo.scHeight}
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="Subnet Hash" bordered={false}>
+          <Card title="Subnet Latest Committed Hash" bordered={false}>
             {latestInfo.subnetBlockHash}
           </Card>
-          <Card title="Subnet Height" bordered={false}>
+          <Card title="Subnet Latest Committed Height" bordered={false}>
             {latestInfo.subnetBlockNumber}
           </Card>
         </Col>

@@ -1,4 +1,4 @@
-import { Button, Input, Space, Result, Typography } from 'antd';
+import { Button, Input, Space, Result, Col, Row, Card, } from 'antd';
 import React, { useState } from 'react';
 import { confirmStatus } from '../services';
 
@@ -6,11 +6,11 @@ const App: React.FC = () => {
   const [status, setStatus] = useState(null);
   const [userInput, setUserInput] = useState("");
   
-  const showSuccess = () => {
+  const showSuccess = (msg: string) => {
     return (
       <Result
           status="success"
-          title="This block is confirmed!"
+          title={msg}
           >
             <div className="desc">
           </div>
@@ -18,14 +18,37 @@ const App: React.FC = () => {
     )
   }
   
-  const showFailure = () => {
+  const showFailure = (msg: string) => {
     return (
       <Result
       status="error"
       title="Not confirmed"
-      subTitle="This block has not been confirmed in mainnet or subnet!"
+      subTitle={msg}
       ></Result>
     )
+  }
+  
+  const showConfirmations = (status: {isCommittedInSmartContract: boolean, isCommittedInSubnet: boolean, isCommitted: boolean}) => {
+    return (
+      <div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Card title="Smart Contract Confirmation" size="small">
+              {status.isCommittedInSmartContract ? showSuccess("Confirmed in Smart Contract") : showFailure("Not confirmed in Smart Contract")}
+            </Card>
+          </Col>
+          <Col span={12}>
+            <Card title="Subnet Confirmation" size="small">
+              {status.isCommittedInSubnet ? showSuccess("Confirmed in Subnet") : showFailure("Not confirmed in Subnet")}
+            </Card>
+          </Col>
+        </Row>
+        <Card title="Double Confirmation" bordered={true}>
+          {status.isCommitted ? showSuccess("This block has been double confirmed") : showFailure("This block failed double confirmation")}
+        </Card>
+      </div>
+    )
+    
   }
   
   const checkStatus = () => {
@@ -48,9 +71,7 @@ const App: React.FC = () => {
         <Button type="primary" onClick={() => checkStatus()} ghost block>Submit</Button>
       </Space>
         {
-          status == null ? <div></div> : (
-            status ? showSuccess() : showFailure()
-          )
+          status == null ? <div></div> : showConfirmations(status)
         }
     </div>
     
