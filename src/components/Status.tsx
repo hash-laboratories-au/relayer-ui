@@ -57,8 +57,13 @@ const App: React.FC = () => {
         setStatus(false);
         return;
       }
-      const result = await confirmStatus(userInput)
-      result ? setStatus(result) : setStatus(false)
+      try {
+        const result = await confirmStatus(userInput)
+        result ? setStatus(result) : setStatus(false)
+      } catch (error) {
+        console.error(error)
+        setStatus(false)
+      }
     }
     checkStatusFromUserInput();
   }

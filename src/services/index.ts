@@ -13,7 +13,6 @@ export const fetchLatest = async() => {
 
 export const confirmStatus = async(hashToConfirm: string) => {
   const {subnetBlockHeight, committed } = await getSubnetHeaderFromMainnet(hashToConfirm)
-  if (!committed) return false;
   const { subnetBlockHash, committedInSubnet } = await getComittedBlockByHeightFromSubnet(subnetBlockHeight)
   return {
     isCommittedInSmartContract: committed,

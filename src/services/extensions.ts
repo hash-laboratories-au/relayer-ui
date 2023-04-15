@@ -1,6 +1,6 @@
 import Web3 from "web3";
 
-const SUBNET_EXTENSION_NAME = "xdcSubnet";
+const EXTENSION_NAME = "xdc";
 
 export interface CommittedBlockInfo {
   Hash: string;
@@ -27,8 +27,8 @@ export interface Web3WithExtension extends Web3 {
   }
 }
 
-export const subnetExtensions = {
-  property: SUBNET_EXTENSION_NAME,
+export const extensions = {
+  property: EXTENSION_NAME,
   methods: [
     {
       name: "getLatestCommittedBlockInfo",
