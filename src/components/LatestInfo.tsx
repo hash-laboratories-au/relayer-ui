@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Card, Space } from 'antd';
-import { fetchLatest } from '../client';
+import { fetchLatest } from '../services';
 
 const App: React.FC = () => {
-  const [hash, setHash] = useState("0x...");
-  const [height, setHeight] = useState("0");
+  const [latestInfo, setLatestInfo] = useState({
+    scHash: "0x...", scHeight: "0",
+    subnetBlockHash: "0x...", subnetBlockNumber: "0", subnetBlockRound: "0"
+  })
+
   const populateResult = async () => {
-    const result = await fetchLatest();
-    setHash(result.hash)
-    setHeight(result.height)
+    setLatestInfo(await fetchLatest())
   };
   
   useEffect(() => {
@@ -18,14 +19,20 @@ const App: React.FC = () => {
   return (
     <div>
       <Row gutter={16}>
-        <Col span={14}>
-          <Card title="Hash" bordered={false}>
-            {hash}
+        <Col span={12}>
+          <Card title="Smart Contract Hash" bordered={false}>
+            {latestInfo.scHash}
+          </Card>
+          <Card title="Smart ContractHeight" bordered={false}>
+            {latestInfo.scHeight}
           </Card>
         </Col>
-        <Col span={8}>
-          <Card title="Height" bordered={false}>
-            {height}
+        <Col span={12}>
+          <Card title="Subnet Hash" bordered={false}>
+            {latestInfo.subnetBlockHash}
+          </Card>
+          <Card title="Subnet Height" bordered={false}>
+            {latestInfo.subnetBlockNumber}
           </Card>
         </Col>
       </Row>

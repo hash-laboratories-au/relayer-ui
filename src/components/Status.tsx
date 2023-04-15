@@ -1,6 +1,6 @@
 import { Button, Input, Space, Result, Typography } from 'antd';
 import React, { useState } from 'react';
-import { confirmStatus } from '../client';
+import { confirmStatus } from '../services';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState(null);
@@ -10,7 +10,7 @@ const App: React.FC = () => {
     return (
       <Result
           status="success"
-          title="This block is committed!"
+          title="This block is confirmed!"
           >
             <div className="desc">
           </div>
@@ -22,8 +22,8 @@ const App: React.FC = () => {
     return (
       <Result
       status="error"
-      title="Verification failed!"
-      subTitle="This block has not been confirmed in mainnet or it doesn exist in subnet!"
+      title="Not confirmed"
+      subTitle="This block has not been confirmed in mainnet or subnet!"
       ></Result>
     )
   }
