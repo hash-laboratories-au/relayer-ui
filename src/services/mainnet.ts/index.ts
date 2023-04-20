@@ -3,15 +3,19 @@ import { abi } from '../utils';
 import { extensions } from "../extensions";
 
 const mainnetUrl = "https://devnetstats.apothem.network/mainnet";
-const smartContractAddress = "0x2EE8Ba69eBadA17F4a06A13F5Ff8819cb7b018eF";
+const smartContractAddress = "0xe572344202029Ba72A7C3ee954EAF5A4d0876871";
 
-var web3Client = new web3(mainnetUrl).extend(extensions);
-var smartContractInstance = new web3Client.eth.Contract(abi as any, smartContractAddress);
+const web3Client = new web3(mainnetUrl).extend(extensions);
+const smartContractInstance = new web3Client.eth.Contract(abi as any, smartContractAddress);
 
 export const fetchLatestFromMainnet = async() => {
-  var result = await smartContractInstance.methods.getLatestBlocks().call();
-
-  return { mainnetHash: result[1].hash, mainnetHeight: result[1].number};
+  try {
+    const result = await smartContractInstance.methods.getLatestBlocks().call();
+    return { mainnetHash: result[1].hash, mainnetHeight: result[1].number};  
+  } catch (error) {
+    console.error("Error while trying to fetchLatestFromMainnet", error);
+    throw error;
+  }  
 };
 
 export const getSubnetHeaderFromMainnet = async (hash: string) => {

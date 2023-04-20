@@ -1,15 +1,75 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row, Card, Space } from 'antd';
-import { fetchLatest } from '../services';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { Button, Space, Table, Alert } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import { fetchLatest, bulkGetLatestStatus } from '../services';
+
+interface DataType {
+  key: string;
+  subnetBlockNumber: number;
+  subnetBlockHash: string;
+  committedInSubnet: boolean;
+  committedInMainnet: boolean;
+}
+
+const getShorthandedHash = (hash: string) => {
+  return hash.substring(0, 8) + "..." + hash.substring( hash.length - 6)
+}
+const showSuccess = () => {
+  return (
+    <CheckCircleTwoTone />
+  )
+}
+
+const showFailure = () => {
+  return (
+    <CloseCircleTwoTone />
+  )
+}
 
 const App: React.FC = () => {
-  const [latestInfo, setLatestInfo] = useState({
-    scHash: "0x...", scHeight: "0",
-    subnetBlockHash: "0x...", subnetBlockNumber: "0", subnetBlockRound: "0"
-  })
+  const [latestInfo, setLatestInfo] = useState([]);
+  const [relayerQueueGap, setRelayerQueueGap] = useState(0);
+  
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Height",
+      dataIndex: "subnetBlockNumber",
+      key: "subnetBlockNumber",
+    },
+    {
+      title: "Hash",
+      dataIndex: "subnetBlockHash",
+      key: "subnetBlockHash",
+      render: (hash) => <div>{getShorthandedHash(hash)}</div>,
+    },
+    {
+      title: "Committed in subnet",
+      dataIndex: "committedInSubnet",
+      key: "committedInSubnet",
+      render: (isCommitted) => <div>{isCommitted? showSuccess(): showFailure()}</div>
+    },
+    {
+      title: "Committed in XDC",
+      dataIndex: "committedInMainnet",
+      key: "committedInMainnet",
+      render: (isCommitted) => <div>{isCommitted? showSuccess(): showFailure()}</div>
+    },
+  ]
 
   const populateResult = async () => {
-    setLatestInfo(await fetchLatest())
+    const latestBlockInfo = await fetchLatest();
+    const status = await bulkGetLatestStatus();
+    
+    const processingGap = latestBlockInfo.subnetBlockNumber - latestBlockInfo.scHeight;
+    const data: DataType[] = status.map((s, i) => {
+      return {
+        ...s,
+        key: i.toString(),
+      }
+    })
+    setLatestInfo(data);
+    setRelayerQueueGap(processingGap);
   };
   
   useEffect(() => {
@@ -18,28 +78,12 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Card title="Smart Contract Latest Committed Hash" bordered={false}>
-            {latestInfo.scHash}
-          </Card>
-          <Card title="Smart Contract Latest Committed Height" bordered={false}>
-            {latestInfo.scHeight}
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card title="Subnet Latest Committed Hash" bordered={false}>
-            {latestInfo.subnetBlockHash}
-          </Card>
-          <Card title="Subnet Latest Committed Height" bordered={false}>
-            {latestInfo.subnetBlockNumber}
-          </Card>
-        </Col>
-      </Row>
-      <br></br>
       <Space direction="vertical" style={{ width: '100%' }}>
         <Button type="primary" ghost block onClick={() => populateResult()}>Refresh</Button>
+        <Alert message={`Relayer processing queue: ${relayerQueueGap}`} type="info" showIcon />
       </Space>
+
+      <Table columns={columns} dataSource={latestInfo} />
     </div>
   );
 }

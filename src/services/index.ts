@@ -1,5 +1,7 @@
 import { fetchLatestFromMainnet, getSubnetHeaderFromMainnet } from "./mainnet.ts";
-import { getLatestComittedBlockFromSubnet, getComittedBlockByHeightFromSubnet } from "./subnet";
+import { getLatestComittedBlockFromSubnet, getComittedBlockByHeightFromSubnet, getLatestBlocksFromSubnet } from "./subnet";
+
+const NUM_OF_LAST_BLOCKS_TO_SHOW = 10;
 
 export const fetchLatest = async() => {
   const { mainnetHash, mainnetHeight } = await fetchLatestFromMainnet();
@@ -20,3 +22,15 @@ export const confirmStatus = async(hashToConfirm: string) => {
     isCommitted: (subnetBlockHash === hashToConfirm) && committed && committedInSubnet
   }
 };
+
+export const bulkGetLatestStatus = async () => {
+  const latestSubnetBlocks = await getLatestBlocksFromSubnet(NUM_OF_LAST_BLOCKS_TO_SHOW);
+  const blocksStatus = await Promise.all(latestSubnetBlocks.map(async (b) => {
+    const { committed } = await getSubnetHeaderFromMainnet(b.subnetBlockHash);
+    return {
+      ...b,
+      committedInMainnet: committed as boolean
+    }
+  }));
+  return blocksStatus;
+}

@@ -318,11 +318,6 @@ export const abi = [
           },
           {
             "internalType": "int256",
-            "name": "number",
-            "type": "int256"
-          },
-          {
-            "internalType": "int256",
             "name": "threshold",
             "type": "int256"
           }

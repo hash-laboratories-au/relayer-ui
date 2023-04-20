@@ -2,31 +2,30 @@ import { Button, Input, Space, Result, Col, Row, Card, } from 'antd';
 import React, { useState } from 'react';
 import { confirmStatus } from '../services';
 
+const showSuccess = (msg: string) => {
+  return (
+    <Result
+        status="success"
+        title={msg}
+        >
+          <div className="desc">
+        </div>
+        </Result>
+  )
+}
+
+const showFailure = (msg: string) => {
+  return (
+    <Result
+    status="error"
+    title="Not confirmed"
+    subTitle={msg}
+    ></Result>
+  )
+}
 const App: React.FC = () => {
   const [status, setStatus] = useState(null);
   const [userInput, setUserInput] = useState("");
-  
-  const showSuccess = (msg: string) => {
-    return (
-      <Result
-          status="success"
-          title={msg}
-          >
-            <div className="desc">
-          </div>
-          </Result>
-    )
-  }
-  
-  const showFailure = (msg: string) => {
-    return (
-      <Result
-      status="error"
-      title="Not confirmed"
-      subTitle={msg}
-      ></Result>
-    )
-  }
   
   const showConfirmations = (status: {isCommittedInSmartContract: boolean, isCommittedInSubnet: boolean, isCommitted: boolean}) => {
     return (
