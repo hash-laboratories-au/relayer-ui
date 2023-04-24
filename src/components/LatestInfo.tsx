@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
-import { Button, Space, Table, Alert } from 'antd';
+import { Button, Space, Table, Alert, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { fetchLatest, bulkGetLatestStatus } from '../services';
 
@@ -41,7 +41,9 @@ const App: React.FC = () => {
       title: "Hash",
       dataIndex: "subnetBlockHash",
       key: "subnetBlockHash",
-      render: (hash) => <div>{getShorthandedHash(hash)}</div>,
+      render: (hash) => <div>
+        <Typography.Paragraph copyable={{ text: hash}}>{getShorthandedHash(hash)}</Typography.Paragraph>
+      </div>,
     },
     {
       title: "Committed in subnet",
@@ -60,7 +62,7 @@ const App: React.FC = () => {
   const populateResult = async () => {
     const latestBlockInfo = await fetchLatest();
     const status = await bulkGetLatestStatus();
-    
+    console.log(latestBlockInfo)
     const processingGap = latestBlockInfo.subnetBlockNumber - latestBlockInfo.scHeight;
     const data: DataType[] = status.map((s, i) => {
       return {
