@@ -1,5 +1,5 @@
 import { fetchLatestFromMainnet, getSubnetHeaderFromMainnet } from "./mainnet.ts";
-import { getLatestComittedBlockFromSubnet, getComittedBlockByHeightFromSubnet, getLatestBlocksFromSubnet } from "./subnet";
+import { getLatestComittedBlockFromSubnet, getComittedBlockByHashFromSubnet, getLatestBlocksFromSubnet } from "./subnet";
 
 const NUM_OF_LAST_BLOCKS_TO_SHOW = 10;
 
@@ -14,12 +14,12 @@ export const fetchLatest = async() => {
 };
 
 export const confirmStatus = async(hashToConfirm: string) => {
-  const {subnetBlockHeight, committed } = await getSubnetHeaderFromMainnet(hashToConfirm)
-  const { subnetBlockHash, committedInSubnet } = await getComittedBlockByHeightFromSubnet(subnetBlockHeight)
+  const { committed } = await getSubnetHeaderFromMainnet(hashToConfirm)
+  const { committedInSubnet } = await getComittedBlockByHashFromSubnet(hashToConfirm)
   return {
     isCommittedInSmartContract: committed,
     isCommittedInSubnet: committedInSubnet,
-    isCommitted: (subnetBlockHash === hashToConfirm) && committed && committedInSubnet
+    isCommitted: committed && committedInSubnet
   }
 };
 

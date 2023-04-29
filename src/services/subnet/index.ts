@@ -14,8 +14,8 @@ export const getLatestComittedBlockFromSubnet = async () => {
   };
 }
 
-export const getComittedBlockByHeightFromSubnet = async (blockNum: number) => {
-  const { Hash, Number, Round, Committed }  = await web3Client.xdc.getV2BlockByNumber(Web3.utils.numberToHex(blockNum));
+export const getComittedBlockByHashFromSubnet = async (blockHash: String) => {
+  const { Hash, Number, Round, Committed }  = await web3Client.xdc.getV2BlockByHash(blockHash);
   if (!Hash || !Number ) {
     console.error("Invalid block hash or height or encodedRlp or ParentHash received", Hash, Number);
     throw new Error("Unable to get committed block information by height from subnet");

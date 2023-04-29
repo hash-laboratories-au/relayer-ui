@@ -2,6 +2,12 @@ import { Button, Input, Space, Result, Col, Row, Card, } from 'antd';
 import React, { useState } from 'react';
 import { confirmStatus } from '../services';
 
+const FAILED = {
+  isCommittedInSmartContract: false,
+  isCommittedInSubnet: false,
+  isCommitted: false
+}
+
 const showSuccess = (msg: string) => {
   return (
     <Result
@@ -53,15 +59,15 @@ const App: React.FC = () => {
   const checkStatus = () => {
     const checkStatusFromUserInput = async () => {
       if (!userInput) {
-        setStatus(false);
+        setStatus(FAILED);
         return;
       }
       try {
         const result = await confirmStatus(userInput)
-        result ? setStatus(result) : setStatus(false)
+        result ? setStatus(result) : setStatus(FAILED)
       } catch (error) {
         console.error(error)
-        setStatus(false)
+        setStatus(FAILED)
       }
     }
     checkStatusFromUserInput();

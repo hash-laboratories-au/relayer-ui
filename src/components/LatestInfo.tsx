@@ -62,7 +62,6 @@ const App: React.FC = () => {
   const populateResult = async () => {
     const latestBlockInfo = await fetchLatest();
     const status = await bulkGetLatestStatus();
-    console.log(latestBlockInfo)
     const processingGap = latestBlockInfo.subnetBlockNumber - latestBlockInfo.scHeight;
     const data: DataType[] = status.map((s, i) => {
       return {
