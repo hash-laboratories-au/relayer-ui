@@ -17,7 +17,7 @@ const getShorthandedHash = (hash: string) => {
 }
 const showSuccess = () => {
   return (
-    <CheckCircleTwoTone />
+    <CheckCircleTwoTone twoToneColor="#52c41a"/>
   )
 }
 
