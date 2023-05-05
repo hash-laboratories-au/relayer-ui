@@ -1,7 +1,7 @@
 import { fetchLatestFromMainnet, getSubnetHeaderFromMainnet } from "./mainnet.ts";
 import { getLatestComittedBlockFromSubnet, getComittedBlockByHashFromSubnet, getLatestBlocksFromSubnet } from "./subnet";
 
-const NUM_OF_LAST_BLOCKS_TO_SHOW = 10;
+const NUM_OF_LAST_BLOCKS_TO_SHOW = 30;
 
 export const fetchLatest = async() => {
   const { mainnetHash, mainnetHeight } = await fetchLatestFromMainnet();
