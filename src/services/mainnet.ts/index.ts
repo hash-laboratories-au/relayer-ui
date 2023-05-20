@@ -3,7 +3,7 @@ import { abi } from '../utils';
 import { extensions } from "../extensions";
 
 const mainnetUrl = "https://devnetstats.apothem.network/mainnet";
-const smartContractAddress = "0x88bfE37a20A41105009C7786B8D5755b855d5004";
+const smartContractAddress = "0xe0F26797F631bA327a179F21733cc33D8C360036";
 
 const web3Client = new web3(mainnetUrl).extend(extensions);
 const smartContractInstance = new web3Client.eth.Contract(abi as any, smartContractAddress);
